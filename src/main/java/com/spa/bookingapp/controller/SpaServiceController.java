@@ -41,6 +41,12 @@ public class SpaServiceController {
             service.setPrice(updatedService.getPrice());
             service.setCategory(updatedService.getCategory());
             service.setImageUrl(updatedService.getImageUrl());
+            // Bug fix: la duración no se actualizaba antes. Si el admin cambiaba la
+            // duración de un servicio (ej. de 60 a 90 min), el cambio se perdía y la
+            // lógica de overlap quedaba inconsistente para nuevas citas.
+            if (updatedService.getDurationMinutes() != null) {
+                service.setDurationMinutes(updatedService.getDurationMinutes());
+            }
             spaServiceRepository.save(service);
             return ResponseEntity.ok("Service updated successfully");
         } else {

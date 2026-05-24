@@ -90,39 +90,9 @@ async function loadAllAppointments() {
     }
 }
 
-async function loadTherapistAppointments() {
-    const list = document.getElementById('therapist-appointments-list');
-    if (!list) return;
-    
-    list.innerHTML = '<p>Cargando citas...</p>';
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    try {
-        const res = await fetch(`${API_URL}/appointments/therapist`, {
-            headers: { 'Authorization': 'Bearer ' + user.accessToken }
-        });
-        if (res.ok) {
-            const apps = await res.json();
-            list.innerHTML = '';
-            if(apps.length === 0) {
-                list.innerHTML = '<p style="color:var(--text-light)">No tienes citas asignadas.</p>';
-                return;
-            }
-            apps.forEach(a => {
-                const date = new Date(a.appointmentTime).toLocaleString();
-                list.innerHTML += `
-                    <div class="service-card" style="padding: 15px;">
-                        <h4 style="margin-bottom: 10px;">${a.serviceName}</h4>
-                        <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Cliente:</strong> ${a.clientName}</p>
-                        <p style="font-size: 0.85em; color: var(--primary-color);">📅 ${date}</p>
-                    </div>
-                `;
-            });
-        }
-    } catch (err) {
-        list.innerHTML = '<p>Error cargando tus citas.</p>';
-    }
-}
+// NOTA: loadTherapistAppointments tenía dos definiciones en este archivo.
+// La segunda (más abajo, ~línea 256) override a la primera y es la canónica.
+// Eliminada la duplicada para evitar confusión al leer el código.
 
 async function loadClientAppointments() {
     const list = document.getElementById('client-appointments-list');
@@ -144,11 +114,18 @@ async function loadClientAppointments() {
             }
             apps.forEach(a => {
                 const date = new Date(a.appointmentTime).toLocaleString();
+                const isCancelled = a.status === 'CANCELADA' || a.status === 'CANCELLED' || a.status === 'CANCELED';
+                const statusColor = isCancelled ? '#999' : 'var(--primary-color)';
+                const cancelBtn = isCancelled
+                    ? ''
+                    : `<button class="btn primary" style="background:#e74c3c; padding:5px 12px; font-size:0.85em; margin-top:10px;" onclick="cancelMyAppointment(${a.id})">Cancelar</button>`;
                 list.innerHTML += `
-                    <div class="service-card" style="padding: 15px; border-top: 3px solid var(--secondary-color);">
+                    <div class="service-card" style="padding: 15px; border-top: 3px solid var(--secondary-color); ${isCancelled ? 'opacity:0.6;' : ''}">
                         <h4 style="margin-bottom: 10px; color: var(--secondary-color);">${a.serviceName}</h4>
                         <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Terapeuta:</strong> ${a.therapistName}</p>
                         <p style="font-size: 0.85em; color: var(--text-dark);">📅 ${date}</p>
+                        <p style="font-size: 0.8em; margin-top: 5px; color: ${statusColor};"><strong>Estado:</strong> ${a.status}</p>
+                        ${cancelBtn}
                     </div>
                 `;
             });
@@ -165,18 +142,21 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const username = document.getElementById('reg-username').value;
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
-    const roleValue = document.getElementById('reg-role').value;
-    
-    const role = roleValue ? [roleValue] : [];
+    // SEGURIDAD: el registro público siempre crea un CLIENTE (forzado en backend).
+    // Roles ADMIN/THERAPIST se gestionan vía DataSeeder o panel admin existente.
+
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Creando...';
 
     try {
         const res = await fetch(`${API_URL}/auth/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, username, email, password, role })
+            body: JSON.stringify({ name, username, email, password })
         });
         const data = await res.json();
-        
+
         if (res.ok) {
             showMessage('register-message', data.message, false);
             setTimeout(() => switchTab('login'), 2000);
@@ -185,6 +165,9 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         }
     } catch (err) {
         showMessage('register-message', 'Error de conexión con el servidor', true);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Crear Cuenta';
     }
 });
 
@@ -542,10 +525,19 @@ async function openBookingModal(serviceId, serviceName) {
     currentBookingServiceId = serviceId;
     document.getElementById('booking-service-name').textContent = `Servicio: ${serviceName}`;
     document.getElementById('booking-modal').classList.add('active');
-    
+
+    // UX: limitar el datetime picker a fechas futuras (a partir de "ahora + 1 min").
+    // Es defensa en profundidad: el backend igual valida que no sea pasado.
+    const dt = document.getElementById('booking-datetime');
+    if (dt) {
+        const now = new Date(Date.now() + 60000);
+        const pad = (n) => String(n).padStart(2, '0');
+        dt.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    }
+
     // Fetch therapists
     const userData = JSON.parse(localStorage.getItem('user'));
-    const token = userData.token || userData.accessToken;
+    const token = userData.accessToken;
     try {
         const res = await fetch(`${API_URL}/users/therapists`, {
             headers: { 'Authorization': `Bearer ${token}` }
@@ -583,7 +575,7 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
     const therapistId = document.getElementById('booking-therapist').value;
     const datetime = document.getElementById('booking-datetime').value;
     const userData = JSON.parse(localStorage.getItem('user'));
-    const token = userData.token || userData.accessToken;
+    const token = userData.accessToken;
 
     if (!therapistId) {
         showMessage('booking-message', 'Por favor selecciona un terapeuta.', true);
@@ -594,10 +586,17 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
         return;
     }
 
+    // Evitar doble-click: deshabilitar el botón mientras dura la request.
+    // Sin esto, el cliente puede crear 2 citas idénticas si hace doble click rápido.
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Agendando...';
+
     try {
         const res = await fetch(`${API_URL}/appointments`, {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
@@ -607,16 +606,17 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
                 appointmentTime: datetime
             })
         });
-        
+
         const data = await res.json().catch(() => ({}));
 
         if (res.ok) {
             showMessage('booking-message', '¡Cita agendada exitosamente!', false);
             setTimeout(closeBookingModal, 2000);
-            
+
             // Refrescar paneles si están abiertos
             if (userData.roles.includes('ROLE_ADMIN')) loadAllAppointments();
             if (userData.roles.includes('ROLE_THERAPIST')) loadTherapistAppointments();
+            if (userData.roles.includes('ROLE_CLIENT')) loadClientAppointments();
         } else {
             // El backend devuelve el mensaje específico:
             //  - conflicto de overlap  -> "Esa franja horaria ya está reservada... Disponibilidad más cercana: ..."
@@ -627,8 +627,34 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
         }
     } catch (err) {
         showMessage('booking-message', 'Error de conexión', true);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
     }
 });
+
+// Cancelar cita (cliente o admin) — llama PUT /api/appointments/{id}/cancel
+async function cancelMyAppointment(appointmentId) {
+    if (!confirm('¿Estás seguro de que querés cancelar esta cita?')) return;
+    const userData = JSON.parse(localStorage.getItem('user'));
+    try {
+        const res = await fetch(`${API_URL}/appointments/${appointmentId}/cancel`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${userData.accessToken}` }
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok) {
+            alert(data.message || 'Cita cancelada.');
+            // Refrescar el panel actual
+            if (userData.roles.includes('ROLE_CLIENT')) loadClientAppointments();
+            if (userData.roles.includes('ROLE_ADMIN')) loadAllAppointments();
+        } else {
+            alert(data.message || 'No fue posible cancelar la cita.');
+        }
+    } catch (err) {
+        alert('Error de conexión al cancelar la cita.');
+    }
+}
 
 // Init
 checkAuth();

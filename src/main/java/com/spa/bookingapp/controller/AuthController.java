@@ -83,33 +83,14 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRole();
+        // SEGURIDAD: el registro publico SIEMPRE crea un CLIENTE.
+        // Los roles ADMIN/THERAPIST se asignan solo vía DataSeeder o por un admin
+        // existente (no expuesto en este endpoint). Esto previene la autoescalación
+        // de privilegios via /api/auth/signup con {"role":["admin"]}.
         Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null || strRoles.isEmpty()) {
-            Role userRole = roleRepository.findByName("ROLE_CLIENT")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName("ROLE_ADMIN")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "therapist":
-                        Role modRole = roleRepository.findByName("ROLE_THERAPIST")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName("ROLE_CLIENT")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
+        Role clientRole = roleRepository.findByName("ROLE_CLIENT")
+                .orElseThrow(() -> new RuntimeException("Error: Role ROLE_CLIENT no encontrado."));
+        roles.add(clientRole);
 
         user.setRoles(roles);
         userRepository.save(user);

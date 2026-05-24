@@ -1,10 +1,16 @@
 package com.spa.bookingapp.payload.request;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class AppointmentRequest {
+    @NotNull(message = "El servicio es obligatorio")
     private Long serviceId;
+
+    @NotNull(message = "El terapeuta es obligatorio")
     private Long therapistId;
+
+    @NotBlank(message = "La fecha y hora son obligatorias")
     private String appointmentTime;
 
     public Long getServiceId() { return serviceId; }

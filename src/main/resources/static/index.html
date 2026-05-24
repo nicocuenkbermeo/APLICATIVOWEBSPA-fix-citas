@@ -168,14 +168,9 @@
                         <label data-i18n="auth.pass">Contraseña</label>
                         <input type="password" id="reg-password" required>
                     </div>
-                    <div class="input-group">
-                        <label data-i18n="auth.role">Rol (Opcional - Solo para pruebas)</label>
-                        <select id="reg-role">
-                            <option value="" data-i18n="auth.role.client">Cliente</option>
-                            <option value="therapist" data-i18n="auth.role.therapist">Terapeuta</option>
-                            <option value="admin" data-i18n="auth.role.admin">Administrador</option>
-                        </select>
-                    </div>
+                    <p style="font-size:0.85em; color: var(--text-light, #888); margin: 5px 0 15px 0;">
+                        Te registrás como <strong>Cliente</strong>. Los roles Terapeuta y Administrador los gestiona el equipo del spa.
+                    </p>
                     <button type="submit" class="btn primary" data-i18n="auth.btn.create">Crear Cuenta</button>
                     <div id="register-message" class="message"></div>
                 </form>

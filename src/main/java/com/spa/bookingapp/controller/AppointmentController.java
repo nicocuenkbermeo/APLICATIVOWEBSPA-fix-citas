@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +35,8 @@ public class AppointmentController {
     SpaServiceRepository spaServiceRepository;
 
     @PostMapping
-    @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest request) {
+    @PreAuthorize("hasRole('CLIENT') or hasRole('ADMIN')")
+    public ResponseEntity<?> createAppointment(@Valid @RequestBody AppointmentRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
         User client = userRepository.findById(userDetails.getId())
@@ -165,7 +166,45 @@ public class AppointmentController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}/cancel")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('ADMIN')")
+    public ResponseEntity<?> cancelAppointment(@PathVariable Long id) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElse(null);
+        if (appointment == null) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "La cita no existe.");
+            return ResponseEntity.status(404).body(err);
+        }
+
+        // El cliente solo puede cancelar sus propias citas. El admin cualquiera.
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin && !appointment.getClient().getId().equals(userDetails.getId())) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "No tenés permiso para cancelar esta cita.");
+            return ResponseEntity.status(403).body(err);
+        }
+
+        if ("CANCELADA".equals(appointment.getStatus())) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "La cita ya está cancelada.");
+            return ResponseEntity.badRequest().body(err);
+        }
+
+        appointment.setStatus("CANCELADA");
+        appointmentRepository.save(appointment);
+
+        Map<String, String> ok = new HashMap<>();
+        ok.put("message", "Cita cancelada exitosamente.");
+        return ResponseEntity.ok(ok);
+    }
+
     @GetMapping("/debug")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> debugAppointments() {
         List<Appointment> all = appointmentRepository.findAll();
         List<Map<String, Object>> response = all.stream().map(a -> {
