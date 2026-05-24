@@ -28,10 +28,19 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             body: JSON.stringify({ username, password })
         });
         const data = await res.json();
-        
+
         if (res.ok) {
             localStorage.setItem('user', JSON.stringify(data));
+            // Feedback claro de éxito + redirect automático a home
+            showMessage('login-message', '✓ Inicio de sesión exitoso. Redirigiendo...', false);
+            document.getElementById('login-form').reset();
             checkAuth();
+            setTimeout(() => {
+                showSection('home-section');
+                document.getElementById('login-message').textContent = '';
+                // Scroll suave al tope para que se vea el navbar actualizado
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 900);
         } else {
             showMessage('login-message', data.message || 'Error de autenticación', true);
         }
@@ -55,7 +64,7 @@ async function loadAllAppointments() {
     
     try {
         const res = await fetch(`${API_URL}/appointments/all`, {
-            headers: { 'Authorization': 'Bearer ' + user.token }
+            headers: { 'Authorization': 'Bearer ' + user.accessToken }
         });
         if (res.ok) {
             const apps = await res.json();
@@ -90,7 +99,7 @@ async function loadTherapistAppointments() {
     
     try {
         const res = await fetch(`${API_URL}/appointments/therapist`, {
-            headers: { 'Authorization': 'Bearer ' + user.token }
+            headers: { 'Authorization': 'Bearer ' + user.accessToken }
         });
         if (res.ok) {
             const apps = await res.json();
@@ -124,7 +133,7 @@ async function loadClientAppointments() {
     
     try {
         const res = await fetch(`${API_URL}/appointments/client`, {
-            headers: { 'Authorization': 'Bearer ' + user.token }
+            headers: { 'Authorization': 'Bearer ' + user.accessToken }
         });
         if (res.ok) {
             const apps = await res.json();
