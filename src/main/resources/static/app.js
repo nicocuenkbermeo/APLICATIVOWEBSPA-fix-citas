@@ -609,11 +609,11 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
             if (userData.roles.includes('ROLE_ADMIN')) loadAllAppointments();
             if (userData.roles.includes('ROLE_THERAPIST')) loadTherapistAppointments();
         } else {
-            // Aquí capturamos el error de conflicto de horario o cualquier otro
-            let msg = data.message || 'Esa hora no está disponible para este terapeuta.';
-            if (data.debug_count !== undefined) {
-                msg += ` [DEBUG - Cruces: ${data.debug_count}, ID: ${data.debug_therapistId}, Fechas: ${JSON.stringify(data.debug_apps)}]`;
-            }
+            // El backend devuelve el mensaje específico:
+            //  - conflicto de overlap  -> "Esa franja horaria ya está reservada... Disponibilidad más cercana: ..."
+            //  - cita en el pasado     -> "No se puede agendar una cita en el pasado..."
+            //  - formato inválido      -> "Formato de fecha inválido."
+            const msg = data.message || 'No fue posible agendar la cita.';
             showMessage('booking-message', msg, true);
         }
     } catch (err) {

@@ -61,22 +61,35 @@ public class AppointmentController {
             return ResponseEntity.badRequest().body(errorResponse);
         }
 
+        // Validar que la cita no se agende en el pasado
+        if (!parsedDate.isAfter(LocalDateTime.now())) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "No se puede agendar una cita en el pasado. Elegí una fecha y hora futura.");
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+
         // Calcular la hora de fin usando la duración del servicio
         LocalDateTime endTime = parsedDate.plusMinutes(service.getDurationMinutes());
 
         // Validar que no haya cruce de horarios para ese terapeuta (superposición de bloques)
-        long count = appointmentRepository.countOverlappingAppointments(therapist.getId(), parsedDate, endTime);
-        boolean isBooked = (count > 0);
-        if (isBooked) {
+        List<Appointment> overlaps = appointmentRepository.findOverlappingAppointments(
+                therapist.getId(), parsedDate, endTime);
+
+        if (!overlaps.isEmpty()) {
+            // Sugerir la próxima franja libre = fin de la última cita que solapa
+            LocalDateTime nextAvailable = overlaps.get(0).getAppointmentEndTime();
+            for (Appointment a : overlaps) {
+                if (a.getAppointmentEndTime().isAfter(nextAvailable)) {
+                    nextAvailable = a.getAppointmentEndTime();
+                }
+            }
+
             Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("message", "Esa hora no está disponible para este terapeuta.");
-            errorResponse.put("debug_count", count);
-            errorResponse.put("debug_therapistId", therapist.getId());
-            
-            List<Appointment> apps = appointmentRepository.findByTherapistId(therapist.getId());
-            List<String> appsStr = apps.stream().map(a -> a.getAppointmentTime().toString() + " a " + a.getAppointmentEndTime().toString()).collect(java.util.stream.Collectors.toList());
-            errorResponse.put("debug_apps", appsStr);
-            
+            errorResponse.put("message",
+                    "Esa franja horaria ya está reservada para este terapeuta. " +
+                    "Disponibilidad más cercana: " + nextAvailable.toString());
+            errorResponse.put("nextAvailable", nextAvailable.toString());
+            errorResponse.put("conflicts", overlaps.size());
             return ResponseEntity.badRequest().body(errorResponse);
         }
 
