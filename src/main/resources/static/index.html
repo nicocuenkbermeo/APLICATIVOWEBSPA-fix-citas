@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spa Serenity - Bienestar y Relajación</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">Spa Serenity</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home-section')" data-i18n="nav.home">Inicio</a></li>
+            <li><a href="#" onclick="showSection('about-section')" data-i18n="nav.about">Quiénes Somos</a></li>
+            <li><a href="#" onclick="showSection('services-desc-section')" data-i18n="nav.services">Servicios</a></li>
+            <li><a href="#" onclick="handleBookClick()" class="book-link" data-i18n="nav.book">Agendar 📅</a></li>
+            <li id="nav-profile-li" style="display: none;"><a href="#" onclick="showProfile()" data-i18n="nav.profile">Mi Perfil</a></li>
+            <li id="nav-login-li"><a href="#" onclick="showSection('auth-container')" data-i18n="nav.login">Iniciar Sesión</a></li>
+            <li id="nav-logout-li" style="display: none;"><a href="#" onclick="logout()" data-i18n="nav.logout">Cerrar Sesión</a></li>
+        </ul>
+        <div class="lang-selector">
+            <button class="lang-btn active" data-lang="es" onclick="setLanguage('es')">ES</button> |
+            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button> |
+            <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <!-- Home Section -->
+        <section id="home-section" class="content-section active">
+            <div class="hero-content">
+                <h1 data-i18n="home.title">Bienvenido a Spa Serenity</h1>
+                <p data-i18n="home.subtitle">Relájate, renueva tu energía y encuentra tu paz interior.</p>
+                <button class="btn primary hero-btn" onclick="handleBookClick()" data-i18n="home.cta">Reserva tu momento ahora</button>
+            </div>
+            
+            <!-- Featured Services -->
+            <div class="featured-services" style="margin-top: 50px;">
+                <h2 data-i18n="home.featured.title" style="text-align: center; color: var(--secondary-color); margin-bottom: 30px;">Servicios Destacados</h2>
+                <div class="featured-grid">
+                    <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
+                        <img src="img/service_masaje_tradicional.png" alt="Masaje Tradicional" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Masaje Tradicional</h4>
+                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                    </div>
+                    <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
+                        <img src="img/service_piedras.png" alt="Piedras Volcánicas" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Piedras Volcánicas</h4>
+                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                    </div>
+                    <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
+                        <img src="img/service_limpieza.png" alt="Limpieza Facial" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Limpieza Facial</h4>
+                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                    </div>
+                    <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
+                        <img src="img/service_fango.png" alt="Envoltura de Fango" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Envoltura Fango</h4>
+                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Why Choose Us Section -->
+        <div id="why-us-section" style="margin-top: 40px;">
+            <div class="info-box auth-box" style="max-width: 1000px;">
+                <h2 data-i18n="whyus.title" style="text-align: center; margin-bottom: 40px; color: var(--secondary-color);">Por qué elegirnos</h2>
+                
+                <div class="why-us-grid">
+                    <div class="why-card">
+                        <img src="img/refuge.png" alt="Refugio de desconexión" class="why-card-img">
+                        <h3 data-i18n="whyus.box1.title">Un Refugio de Desconexión total</h3>
+                        <p data-i18n="whyus.box1.text">Nuestras instalaciones están diseñadas arquitectónicamente para aislar el ruido del exterior y sumergirte en una atmósfera de paz. Desde la iluminación tenue hasta la aromaterapia personalizada, cada rincón de Spa Serenity está pensado para que olvides el estrés del día a día desde el primer segundo.</p>
+                    </div>
+                    <div class="why-card">
+                        <img src="img/therapist.png" alt="Terapeutas certificados" class="why-card-img">
+                        <h3 data-i18n="whyus.box2.title">Terapeutas Profesionales Certificados</h3>
+                        <p data-i18n="whyus.box2.text">No creemos en las rutinas genéricas. Nuestro equipo está conformado por especialistas en técnicas de masaje tradicionales y de vanguardia. Cada sesión se adapta a las necesidades específicas de tu cuerpo y mente, garantizando un alivio real y una renovación profunda.</p>
+                    </div>
+                    <div class="why-card">
+                        <img src="img/products.png" alt="Productos orgánicos premium" class="why-card-img">
+                        <h3 data-i18n="whyus.box3.title">Productos Orgánicos y Premium</h3>
+                        <p data-i18n="whyus.box3.text">Cuidamos de ti y del planeta. Utilizamos exclusivamente aceites esenciales puros, mascarillas botánicas y productos 100% orgánicos, libres de químicos agresivos. Una experiencia de lujo que respeta, nutre y revitaliza tu piel de forma natural.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about-section" class="content-section" style="display:none;">
+            <div class="about-banner-container">
+                <img src="img/about-banner.png" alt="Spa Serenity" class="about-banner-img">
+            </div>
+            <div class="about-content">
+                <h2 data-i18n="about.title">Quiénes Somos</h2>
+                <div class="about-card story-card">
+                    <p data-i18n="about.story" class="about-story-text">
+                        Spa Serenity nació de la firme creencia de que el bienestar no debe ser un lujo ocasional, sino un estilo de vida. En un mundo que se mueve cada vez más rápido, nos propusimos crear un santuario urbano; un espacio donde el tiempo se detiene y la mente encuentra su centro.<br><br>
+                        Lo que comenzó como un pequeño sueño de terapeutas apasionados por la salud integral, hoy es un espacio de referencia en relajación, donde combinamos técnicas ancestrales con el uso de aparatos especializados y el confort moderno.
+                    </p>
+                </div>
+            </div>
+            <div class="about-cards-grid">
+                <div class="about-card">
+                    <h3 data-i18n="about.mission.title">Nuestra Misión</h3>
+                    <p data-i18n="about.mission.text">Brindar una experiencia de bienestar excepcional, ofreciendo tratamientos terapéuticos y estéticos de la más alta calidad. Nos comprometemos a liberar el estrés diario de nuestros clientes, promoviendo el equilibrio perfecto entre cuerpo, mente y espíritu en un ambiente seguro, profesional y profundamente relajante.</p>
+                </div>
+                <div class="about-card">
+                    <h3 data-i18n="about.vision.title">Nuestra Visión</h3>
+                    <p data-i18n="about.vision.text">Convertirnos para el año 2030 en la cadena de spas líder y favorita de la región, siendo reconocidos por la excelencia de nuestro equipo humano, la innovación constante en terapias de relajación y el uso exclusivo de productos orgánicos que respetan la salud y el medio ambiente.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <!-- Services Section -->
+        <section id="services-desc-section" class="content-section" style="display:none;">
+            <div class="about-content">
+                <h2 data-i18n="services.title">Nuestros Tratamientos</h2>
+                <p data-i18n="services.subtitle">Descubre lo que tenemos para ofrecerte.</p>
+            </div>
+            
+            <div class="about-cards-grid" id="public-services-container" style="grid-template-columns: 1fr; gap: 40px; max-width: 800px; margin: 0 auto;">
+                <!-- Loaded dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- Auth Section (Login/Register) -->
+        <section id="auth-container" class="content-section container" style="display:none;">
+            <div class="auth-box">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')" data-i18n="auth.login.title">Iniciar Sesión</button>
+                    <button class="tab-btn" onclick="switchTab('register')" data-i18n="auth.register.title">Registrarse</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form">
+                    <div class="input-group">
+                        <label data-i18n="auth.user">Usuario</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="auth.pass">Contraseña</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn primary" data-i18n="auth.btn.enter">Entrar</button>
+                    <div id="login-message" class="message"></div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" style="display: none;">
+                    <div class="input-group">
+                        <label data-i18n="auth.name">Nombre Completo</label>
+                        <input type="text" id="reg-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="auth.user">Usuario</label>
+                        <input type="text" id="reg-username" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="auth.email">Correo Electrónico</label>
+                        <input type="email" id="reg-email" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="auth.pass">Contraseña</label>
+                        <input type="password" id="reg-password" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="auth.role">Rol (Opcional - Solo para pruebas)</label>
+                        <select id="reg-role">
+                            <option value="" data-i18n="auth.role.client">Cliente</option>
+                            <option value="therapist" data-i18n="auth.role.therapist">Terapeuta</option>
+                            <option value="admin" data-i18n="auth.role.admin">Administrador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn primary" data-i18n="auth.btn.create">Crear Cuenta</button>
+                    <div id="register-message" class="message"></div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-container" class="content-section dashboard" style="display:none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2 style="color: var(--secondary-color); font-size: 2.2em; font-weight: 700; text-shadow: 0 2px 10px rgba(255,255,255,0.8);"><span data-i18n="dash.title">Bienvenido</span>, <span id="user-name-display"></span></h2>
+            </div>
+            
+            <div id="profile-content" class="role-panel">
+                <h3 style="color: var(--primary-color);">Tu Historial y Datos</h3>
+                <p>Aquí pronto podrás ver todas tus citas agendadas y actualizar tus datos personales.</p>
+            </div>
+            
+            <!-- Panel de Admin (Movido a Mi Perfil) -->
+            <div id="admin-panel" class="role-panel" style="display: none; margin-top: 30px;">
+                <h3 data-i18n="dash.admin.title">Panel de Administración</h3>
+                
+                <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 40px; align-items: flex-start;">
+                    <!-- Crear Servicio -->
+                    <form id="create-service-form" class="auth-box" style="flex: 1; min-width: 300px; padding: 25px; box-shadow: none; margin: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                        <h4 data-i18n="dash.admin.new_service" style="margin-bottom: 20px; color: var(--secondary-color);">Crear Nuevo Servicio</h4>
+                        <div class="input-group">
+                            <label data-i18n="dash.admin.service_name">Nombre del Servicio</label>
+                            <input type="text" id="service-name" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="dash.admin.price">Precio ($)</label>
+                            <input type="number" id="service-price" required>
+                        </div>
+                        <button type="submit" class="btn primary" data-i18n="dash.admin.save" style="width:100%;">Guardar Servicio</button>
+                        <div id="admin-message" class="message"></div>
+                    </form>
+
+                    <!-- Editar Servicio (Box) -->
+                    <div id="edit-service-container" class="auth-box" style="flex: 1; min-width: 300px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: 0; background: rgba(144, 190, 109, 0.1); border: 1px solid var(--accent-color); display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h4 style="margin: 0; color: var(--accent-color);">Editar Servicio</h4>
+                            <span style="cursor: pointer; font-size: 1.5em; font-weight: bold; color: var(--accent-color);" onclick="document.getElementById('edit-service-container').style.display='none'">&times;</span>
+                        </div>
+                        <form id="edit-service-form" onsubmit="submitEditService(event)">
+                            <input type="hidden" id="edit-service-id">
+                            <div class="input-group">
+                                <label>Categoría</label>
+                                <input type="text" id="edit-service-category" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Nombre del Servicio</label>
+                                <input type="text" id="edit-service-name" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Descripción</label>
+                                <textarea id="edit-service-desc" rows="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #333; outline: none;"></textarea>
+                            </div>
+                            <div class="input-group" style="display:flex; gap: 15px;">
+                                <div style="flex: 1;">
+                                    <label>Precio ($)</label>
+                                    <input type="number" id="edit-service-price" required>
+                                </div>
+                                <div style="flex: 2;">
+                                    <label>URL Imagen (Opcional)</label>
+                                    <input type="text" id="edit-service-image">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn primary" style="width: 100%; margin-top: 5px;">Actualizar Servicio</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <h4 style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
+                <div id="admin-services-list" class="services-grid"></div>
+            </div>
+            
+            <!-- Panel de Terapeuta -->
+            <div id="therapist-panel" class="role-panel" style="display: none; margin-top: 30px;">
+                <h3 data-i18n="dash.therapist.title">Mis Próximas Sesiones (Terapeuta)</h3>
+                <div id="therapist-appointments-list" class="about-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- Cargado por JS -->
+                </div>
+            </div>
+
+            <!-- Panel de Cliente -->
+            <div id="client-panel" class="role-panel" style="display: none; margin-top: 30px;">
+                <h3>Mis Citas Agendadas</h3>
+                <div id="client-appointments-list" class="about-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- Cargado por JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Container (Dynamic Panels) -->
+        <section id="dashboard-container" class="content-section dashboard" style="display:none; align-self: center;">
+            <main>
+                <!-- Panel de Cliente -->
+                <div id="client-panel" style="width: 100%; max-width: 900px; margin: 0 auto; padding: 20px 0; text-align: center;">
+                    <h2 style="color: var(--secondary-color); font-size: 3em; text-align: center; margin-bottom: 50px; text-shadow: 0 2px 10px rgba(255,255,255,0.8);">Nuestros Tratamientos</h2>
+                    
+                    <div class="category-section" style="margin-bottom: 60px;">
+                        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Masajes Relajantes</h3>
+                        <div class="services-grid" id="services-masajes-list" style="justify-content: center; justify-items: center; gap: 60px;">
+                            <!-- Servicios se cargarán aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="category-section" style="margin-bottom: 60px;">
+                        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Tratamientos Faciales</h3>
+                        <div class="services-grid" id="services-faciales-list" style="justify-content: center; justify-items: center; gap: 60px;">
+                            <!-- Servicios se cargarán aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="category-section" style="margin-bottom: 60px;">
+                        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Terapias Corporales</h3>
+                        <div class="services-grid" id="services-corporales-list" style="justify-content: center; justify-items: center; gap: 60px;">
+                            <!-- Servicios se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel de Admin (Movido a Mi Perfil) -->
+                <div id="admin-panel" class="role-panel" style="display: none; margin-top: 30px;">
+                    <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+                        
+                        <!-- Columna Izquierda: Servicios -->
+                        <div style="flex: 2; min-width: 350px;">
+                            <h3 data-i18n="dash.admin.title">Panel de Administración</h3>
+                            
+                            <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 40px; align-items: flex-start;">
+                                <!-- Crear Servicio -->
+                                <form id="create-service-form" class="auth-box" style="flex: 1; min-width: 300px; padding: 25px; box-shadow: none; margin: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                                    <h4 data-i18n="dash.admin.new_service" style="margin-bottom: 20px; color: var(--secondary-color);">Crear Nuevo Servicio</h4>
+                                    <div class="input-group">
+                                        <label data-i18n="dash.admin.service_name">Nombre del Servicio</label>
+                                        <input type="text" id="service-name" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label data-i18n="dash.admin.price">Precio ($)</label>
+                                        <input type="number" id="service-price" required>
+                                    </div>
+                                    <button type="submit" class="btn primary" data-i18n="dash.admin.save" style="width:100%;">Guardar Servicio</button>
+                                    <div id="admin-message" class="message"></div>
+                                </form>
+
+                                <!-- Editar Servicio (Box) -->
+                                <div id="edit-service-container" class="auth-box" style="flex: 1; min-width: 300px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: 0; background: rgba(144, 190, 109, 0.1); border: 1px solid var(--accent-color); display: none;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                        <h4 style="margin: 0; color: var(--accent-color);">Editar Servicio</h4>
+                                        <span style="cursor: pointer; font-size: 1.5em; font-weight: bold; color: var(--accent-color);" onclick="document.getElementById('edit-service-container').style.display='none'">&times;</span>
+                                    </div>
+                                    <form id="edit-service-form" onsubmit="submitEditService(event)">
+                                        <input type="hidden" id="edit-service-id">
+                                        <div class="input-group">
+                                            <label>Categoría</label>
+                                            <input type="text" id="edit-service-category" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Nombre del Servicio</label>
+                                            <input type="text" id="edit-service-name" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Descripción</label>
+                                            <textarea id="edit-service-desc" rows="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #333; outline: none;"></textarea>
+                                        </div>
+                                        <div class="input-group" style="display:flex; gap: 15px;">
+                                            <div style="flex: 1;">
+                                                <label>Precio ($)</label>
+                                                <input type="number" id="edit-service-price" required>
+                                            </div>
+                                            <div class="input-group" style="flex: 2;">
+                                                <label>URL Imagen</label>
+                                                <input type="text" id="edit-service-image">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn primary" style="width: 100%; margin-top: 5px;">Actualizar Servicio</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <h4 style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
+                            <div id="admin-services-list" class="services-grid" style="grid-template-columns: 1fr;"></div>
+                        </div>
+
+                        <!-- Columna Derecha: Citas Globales -->
+                        <div style="flex: 1; min-width: 300px; border-left: 2px solid rgba(0,0,0,0.1); padding-left: 30px;">
+                            <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 25px; display: inline-block;">Todas las Citas</h3>
+                            <div id="admin-appointments-list" class="services-grid" style="grid-template-columns: 1fr; gap: 15px;">
+                                <!-- Citas cargadas dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Panel de Terapeuta -->
+                <div id="therapist-panel" class="role-panel" style="display:none;">
+                    <h3 data-i18n="dash.therapist.title">Mi Horario</h3>
+                    <p data-i18n="dash.therapist.desc">Bienvenido a tu panel de terapeuta.</p>
+                    <div id="therapist-appointments-list" class="services-grid"></div>
+                </div>
+            </main>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>Spa Serenity</h2>
+                <p data-i18n="footer.slogan">Relájate, renueva tu energía y encuentra tu paz interior.</p>
+            </div>
+            <div class="footer-hours">
+                <h3 data-i18n="footer.hours.title">Horarios</h3>
+                <p data-i18n="footer.hours.week">Lunes a Viernes: 8:00 AM – 8:00 PM</p>
+                <p data-i18n="footer.hours.weekend">Sábados: 9:00 AM – 6:00 PM</p>
+            </div>
+            <div class="footer-contact">
+                <h3 data-i18n="footer.contact.title">Contáctanos</h3>
+                <p data-i18n="footer.contact.address">Dirección: Cra 20 #20 A 64 sur</p>
+                <p data-i18n="footer.contact.phone">Teléfono: 301 5193569</p>
+                <p data-i18n="footer.contact.email">✉️ Correo: reservas@spaserenity.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Agendar Cita -->
+    <div class="modal-overlay" id="booking-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+            <h3 style="color: var(--secondary-color); margin-bottom: 20px;" data-i18n="modal.title">Agendar Cita</h3>
+            <p id="booking-service-name" style="font-weight: bold; color: var(--primary-color); margin-bottom: 15px;"></p>
+            
+            <form id="booking-form">
+                <div class="input-group">
+                    <label data-i18n="modal.select_therapist">Seleccionar Terapeuta</label>
+                    <select id="booking-therapist" required>
+                        <option value="" data-i18n="modal.loading_therapists">Cargando terapeutas...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label data-i18n="modal.datetime">Fecha y Hora</label>
+                    <input type="datetime-local" id="booking-datetime" required>
+                </div>
+                <button type="submit" class="btn primary" data-i18n="modal.btn.confirm">Confirmar Cita</button>
+                <div id="booking-message" class="message"></div>
+            </form>
+        </div>
+    </div>
+    <!-- Modals are handled inside the container flow -->
+
+    <!-- Scripts -->
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
