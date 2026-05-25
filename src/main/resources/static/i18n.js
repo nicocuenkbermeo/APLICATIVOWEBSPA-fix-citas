@@ -72,6 +72,73 @@ const translations = {
         "home.featured.card2": "Servicio Destacado 2",
         "home.featured.card3": "Servicio Destacado 3",
         "home.featured.card4": "Servicio Destacado 4",
+        "home.featured.s1.title": "Masaje Tradicional",
+        "home.featured.s2.title": "Piedras Volcánicas",
+        "home.featured.s3.title": "Limpieza Facial",
+        "home.featured.s4.title": "Envoltura Fango",
+        "home.featured.btn.see": "Ver",
+
+        // Booking dashboard (client agendar panel)
+        "book.title": "Nuestros Tratamientos",
+        "book.cat.masajes": "Masajes Relajantes",
+        "book.cat.faciales": "Tratamientos Faciales",
+        "book.cat.corporales": "Terapias Corporales",
+        "book.btn.book": "Agendar Cita",
+        "book.btn.book_for": "Agendar por",
+        "book.public.cta": "Agendar por",
+
+        // Booking modal extras
+        "modal.select_therapist.placeholder": "Selecciona un terapeuta",
+        "modal.no_therapists": "No hay terapeutas disponibles",
+        "modal.error_therapists": "Error cargando terapeutas",
+        "modal.connection_error": "Error de conexión",
+        "modal.booking_in_progress": "Agendando...",
+        "modal.booked_ok": "¡Cita agendada exitosamente!",
+
+        // Profile / dashboard headings
+        "dash.profile.history_title": "Tu Historial y Datos",
+        "dash.profile.history_text": "Aquí pronto podrás ver todas tus citas agendadas y actualizar tus datos personales.",
+        "dash.client.appts_title": "Mis Citas Agendadas",
+        "dash.client.empty_appts": "No has agendado ninguna cita aún.",
+        "dash.client.btn.cancel": "Cancelar",
+        "dash.client.field.therapist": "Terapeuta:",
+        "dash.client.field.status": "Estado:",
+        "dash.therapist.appts_title": "Mis Próximas Sesiones (Terapeuta)",
+        "dash.therapist.field.client": "Cliente:",
+        "dash.therapist.field.datetime": "Fecha y Hora:",
+        "dash.admin.all_appts_title": "Todas las Citas",
+        "dash.admin.appts_empty": "No hay citas agendadas aún.",
+        "dash.admin.appts_loading": "Cargando citas...",
+
+        // Admin services management
+        "dash.admin.services_existing": "Servicios Existentes",
+        "dash.admin.btn.edit": "Editar",
+        "dash.admin.btn.delete": "Borrar",
+        "dash.admin.edit_title": "Editar Servicio",
+        "dash.admin.update": "Actualizar Servicio",
+        "dash.admin.field.category": "Categoría",
+        "dash.admin.field.description": "Descripción",
+        "dash.admin.field.image": "URL Imagen (Opcional)",
+        "dash.admin.confirm_delete": "¿Estás seguro de que deseas eliminar este servicio?",
+        "dash.admin.service_deleted": "Servicio eliminado exitosamente",
+        "dash.admin.service_updated": "Servicio actualizado exitosamente",
+        "dash.admin.service_created": "Servicio creado exitosamente",
+
+        // Admin users management
+        "dash.admin.users_title": "Gestión de Usuarios",
+        "dash.admin.users_desc": "Cambia el rol de cualquier usuario del sistema. Marca los roles deseados y guarda. Por seguridad no podés quitarte a vos mismo el rol ADMIN.",
+        "dash.admin.role.client": "Cliente",
+        "dash.admin.role.therapist": "Terapeuta",
+        "dash.admin.role.admin": "Admin",
+        "dash.admin.users.btn.save": "Guardar",
+        "dash.admin.users.loading": "Cargando usuarios...",
+        "dash.admin.users.error": "Error cargando usuarios.",
+
+        // Auth register disclaimer
+        "auth.register.disclaimer": "Te registrás como Cliente. Los roles Terapeuta y Administrador los gestiona el equipo del spa.",
+
+        // Confirms / alerts
+        "confirm.cancel_appt": "¿Estás seguro de que querés cancelar esta cita?",
         
         // Why Choose Us
         "whyus.title": "Por qué elegirnos",
@@ -158,6 +225,66 @@ const translations = {
         "home.featured.card2": "Featured Service 2",
         "home.featured.card3": "Featured Service 3",
         "home.featured.card4": "Featured Service 4",
+        "home.featured.s1.title": "Traditional Massage",
+        "home.featured.s2.title": "Hot Stones",
+        "home.featured.s3.title": "Facial Cleansing",
+        "home.featured.s4.title": "Mud Wrap",
+        "home.featured.btn.see": "View",
+
+        "book.title": "Our Treatments",
+        "book.cat.masajes": "Relaxing Massages",
+        "book.cat.faciales": "Facial Treatments",
+        "book.cat.corporales": "Body Therapies",
+        "book.btn.book": "Book Appointment",
+        "book.btn.book_for": "Book for",
+        "book.public.cta": "Book for",
+
+        "modal.select_therapist.placeholder": "Select a therapist",
+        "modal.no_therapists": "No therapists available",
+        "modal.error_therapists": "Error loading therapists",
+        "modal.connection_error": "Connection error",
+        "modal.booking_in_progress": "Booking...",
+        "modal.booked_ok": "Appointment booked successfully!",
+
+        "dash.profile.history_title": "Your History and Data",
+        "dash.profile.history_text": "Soon you'll be able to view all your booked appointments and update your personal data here.",
+        "dash.client.appts_title": "My Booked Appointments",
+        "dash.client.empty_appts": "You haven't booked any appointment yet.",
+        "dash.client.btn.cancel": "Cancel",
+        "dash.client.field.therapist": "Therapist:",
+        "dash.client.field.status": "Status:",
+        "dash.therapist.appts_title": "My Upcoming Sessions (Therapist)",
+        "dash.therapist.field.client": "Client:",
+        "dash.therapist.field.datetime": "Date and Time:",
+        "dash.admin.all_appts_title": "All Appointments",
+        "dash.admin.appts_empty": "No appointments booked yet.",
+        "dash.admin.appts_loading": "Loading appointments...",
+
+        "dash.admin.services_existing": "Existing Services",
+        "dash.admin.btn.edit": "Edit",
+        "dash.admin.btn.delete": "Delete",
+        "dash.admin.edit_title": "Edit Service",
+        "dash.admin.update": "Update Service",
+        "dash.admin.field.category": "Category",
+        "dash.admin.field.description": "Description",
+        "dash.admin.field.image": "Image URL (Optional)",
+        "dash.admin.confirm_delete": "Are you sure you want to delete this service?",
+        "dash.admin.service_deleted": "Service deleted successfully",
+        "dash.admin.service_updated": "Service updated successfully",
+        "dash.admin.service_created": "Service created successfully",
+
+        "dash.admin.users_title": "User Management",
+        "dash.admin.users_desc": "Change the role of any user in the system. Check the desired roles and save. For security, you cannot remove the ADMIN role from yourself.",
+        "dash.admin.role.client": "Client",
+        "dash.admin.role.therapist": "Therapist",
+        "dash.admin.role.admin": "Admin",
+        "dash.admin.users.btn.save": "Save",
+        "dash.admin.users.loading": "Loading users...",
+        "dash.admin.users.error": "Error loading users.",
+
+        "auth.register.disclaimer": "You're registering as a Client. The Therapist and Administrator roles are managed by the spa team.",
+
+        "confirm.cancel_appt": "Are you sure you want to cancel this appointment?",
         
         // Why Choose Us
         "whyus.title": "Why Choose Us",
@@ -244,6 +371,66 @@ const translations = {
         "home.featured.card2": "Soin Vedette 2",
         "home.featured.card3": "Soin Vedette 3",
         "home.featured.card4": "Soin Vedette 4",
+        "home.featured.s1.title": "Massage Traditionnel",
+        "home.featured.s2.title": "Pierres Volcaniques",
+        "home.featured.s3.title": "Nettoyage du Visage",
+        "home.featured.s4.title": "Enveloppement à la Boue",
+        "home.featured.btn.see": "Voir",
+
+        "book.title": "Nos Soins",
+        "book.cat.masajes": "Massages Relaxants",
+        "book.cat.faciales": "Soins du Visage",
+        "book.cat.corporales": "Thérapies Corporelles",
+        "book.btn.book": "Réserver",
+        "book.btn.book_for": "Réserver pour",
+        "book.public.cta": "Réserver pour",
+
+        "modal.select_therapist.placeholder": "Sélectionnez un thérapeute",
+        "modal.no_therapists": "Aucun thérapeute disponible",
+        "modal.error_therapists": "Erreur de chargement des thérapeutes",
+        "modal.connection_error": "Erreur de connexion",
+        "modal.booking_in_progress": "Réservation en cours...",
+        "modal.booked_ok": "Rendez-vous réservé avec succès !",
+
+        "dash.profile.history_title": "Votre Historique et Données",
+        "dash.profile.history_text": "Vous pourrez bientôt voir tous vos rendez-vous réservés et mettre à jour vos données personnelles ici.",
+        "dash.client.appts_title": "Mes Rendez-vous",
+        "dash.client.empty_appts": "Vous n'avez encore réservé aucun rendez-vous.",
+        "dash.client.btn.cancel": "Annuler",
+        "dash.client.field.therapist": "Thérapeute :",
+        "dash.client.field.status": "Statut :",
+        "dash.therapist.appts_title": "Mes Prochaines Séances (Thérapeute)",
+        "dash.therapist.field.client": "Client :",
+        "dash.therapist.field.datetime": "Date et Heure :",
+        "dash.admin.all_appts_title": "Tous les Rendez-vous",
+        "dash.admin.appts_empty": "Aucun rendez-vous réservé pour le moment.",
+        "dash.admin.appts_loading": "Chargement des rendez-vous...",
+
+        "dash.admin.services_existing": "Services Existants",
+        "dash.admin.btn.edit": "Modifier",
+        "dash.admin.btn.delete": "Supprimer",
+        "dash.admin.edit_title": "Modifier le Service",
+        "dash.admin.update": "Mettre à Jour",
+        "dash.admin.field.category": "Catégorie",
+        "dash.admin.field.description": "Description",
+        "dash.admin.field.image": "URL de l'image (Optionnel)",
+        "dash.admin.confirm_delete": "Êtes-vous sûr de vouloir supprimer ce service ?",
+        "dash.admin.service_deleted": "Service supprimé avec succès",
+        "dash.admin.service_updated": "Service mis à jour avec succès",
+        "dash.admin.service_created": "Service créé avec succès",
+
+        "dash.admin.users_title": "Gestion des Utilisateurs",
+        "dash.admin.users_desc": "Modifiez le rôle de n'importe quel utilisateur. Cochez les rôles souhaités et enregistrez. Par sécurité, vous ne pouvez pas vous retirer le rôle ADMIN.",
+        "dash.admin.role.client": "Client",
+        "dash.admin.role.therapist": "Thérapeute",
+        "dash.admin.role.admin": "Admin",
+        "dash.admin.users.btn.save": "Enregistrer",
+        "dash.admin.users.loading": "Chargement des utilisateurs...",
+        "dash.admin.users.error": "Erreur de chargement des utilisateurs.",
+
+        "auth.register.disclaimer": "Vous vous inscrivez comme Client. Les rôles Thérapeute et Administrateur sont gérés par l'équipe du spa.",
+
+        "confirm.cancel_appt": "Êtes-vous sûr de vouloir annuler ce rendez-vous ?",
         
         // Why Choose Us
         "whyus.title": "Pourquoi Nous Choisir",
@@ -300,6 +487,28 @@ function setLanguage(lang) {
     if (document.getElementById('therapist-appointments-list') && document.getElementById('therapist-appointments-list').innerHTML.includes('No tienes')) {
         document.getElementById('therapist-appointments-list').innerHTML = `<p>${translations[currentLang]["dash.therapist.empty"]}</p>`;
     }
+
+    // Re-render panels generated via innerHTML por app.js para que las strings dinamicas
+    // se traduzcan tambien (botones "Agendar Cita", "Editar", "Borrar", labels, etc.).
+    // Llamamos los loaders si las funciones existen y el panel correspondiente esta visible.
+    try {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            const userObj = JSON.parse(userData);
+            if (typeof loadAdminServices === 'function' && userObj.roles.includes('ROLE_ADMIN')) loadAdminServices();
+            if (typeof loadAllAppointments === 'function' && userObj.roles.includes('ROLE_ADMIN')) loadAllAppointments();
+            if (typeof loadClientAppointments === 'function') loadClientAppointments();
+            if (typeof loadTherapistAppointments === 'function' && userObj.roles.includes('ROLE_THERAPIST')) loadTherapistAppointments();
+            if (typeof loadUsersForRoleManagement === 'function' && userObj.roles.includes('ROLE_ADMIN')) loadUsersForRoleManagement();
+        }
+        // Catalogo publico (home) tambien se re-renderiza para refrescar el CTA "Agendar por $X"
+        if (typeof loadPublicServices === 'function') loadPublicServices();
+        // Servicios del booking dashboard si esta visible
+        if (typeof loadServices === 'function' && document.getElementById('dashboard-container') &&
+            document.getElementById('dashboard-container').style.display !== 'none') {
+            loadServices();
+        }
+    } catch (_) { /* ignorar errores silenciosamente para no romper el switch de idioma */ }
 }
 
 // Initialize on load

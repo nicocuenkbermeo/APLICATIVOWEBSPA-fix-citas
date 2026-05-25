@@ -48,23 +48,23 @@
                 <div class="featured-grid">
                     <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
                         <img src="img/service_masaje_tradicional.png" alt="Masaje Tradicional" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
-                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Masaje Tradicional</h4>
-                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                        <h4 data-i18n="home.featured.s1.title" style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Masaje Tradicional</h4>
+                        <button class="btn primary" data-i18n="home.featured.btn.see" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
                     </div>
                     <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
                         <img src="img/service_piedras.png" alt="Piedras Volcánicas" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
-                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Piedras Volcánicas</h4>
-                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                        <h4 data-i18n="home.featured.s2.title" style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Piedras Volcánicas</h4>
+                        <button class="btn primary" data-i18n="home.featured.btn.see" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
                     </div>
                     <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
                         <img src="img/service_limpieza.png" alt="Limpieza Facial" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
-                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Limpieza Facial</h4>
-                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                        <h4 data-i18n="home.featured.s3.title" style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Limpieza Facial</h4>
+                        <button class="btn primary" data-i18n="home.featured.btn.see" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
                     </div>
                     <div class="featured-card" style="flex-direction: column; padding: 15px; justify-content: space-between;">
                         <img src="img/service_fango.png" alt="Envoltura de Fango" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
-                        <h4 style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Envoltura Fango</h4>
-                        <button class="btn primary" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
+                        <h4 data-i18n="home.featured.s4.title" style="font-size: 1.1em; margin-bottom: 5px; color: var(--secondary-color);">Envoltura Fango</h4>
+                        <button class="btn primary" data-i18n="home.featured.btn.see" style="padding: 8px; font-size: 0.9em; margin-top: 10px;" onclick="showSection('services-desc-section')">Ver</button>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
                         <label data-i18n="auth.pass">Contraseña</label>
                         <input type="password" id="reg-password" required>
                     </div>
-                    <p style="font-size:0.85em; color: var(--text-light, #888); margin: 5px 0 15px 0;">
+                    <p data-i18n="auth.register.disclaimer" style="font-size:0.85em; color: var(--text-light, #888); margin: 5px 0 15px 0;">
                         Te registrás como <strong>Cliente</strong>. Los roles Terapeuta y Administrador los gestiona el equipo del spa.
                     </p>
                     <button type="submit" class="btn primary" data-i18n="auth.btn.create">Crear Cuenta</button>
@@ -190,8 +190,8 @@
             </div>
             
             <div id="profile-content" class="role-panel">
-                <h3 style="color: var(--primary-color);">Tu Historial y Datos</h3>
-                <p>Aquí pronto podrás ver todas tus citas agendadas y actualizar tus datos personales.</p>
+                <h3 data-i18n="dash.profile.history_title" style="color: var(--primary-color);">Tu Historial y Datos</h3>
+                <p data-i18n="dash.profile.history_text">Aquí pronto podrás ver todas tus citas agendadas y actualizar tus datos personales.</p>
             </div>
             
             <!-- Panel de Admin (Movido a Mi Perfil) -->
@@ -249,7 +249,7 @@
                     </div>
                 </div>
                 
-                <h4 style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
+                <h4 data-i18n="dash.admin.services_existing" style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
                 <div id="admin-services-list" class="services-grid"></div>
 
                 <!-- Gestion de Usuarios y Roles (admin only) -->
@@ -267,7 +267,7 @@
 
             <!-- Panel de Terapeuta -->
             <div id="therapist-panel" class="role-panel" style="display: none; margin-top: 30px;">
-                <h3 data-i18n="dash.therapist.title">Mis Próximas Sesiones (Terapeuta)</h3>
+                <h3 data-i18n="dash.therapist.appts_title">Mis Próximas Sesiones (Terapeuta)</h3>
                 <div id="therapist-appointments-list" class="about-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
                     <!-- Cargado por JS -->
                 </div>
@@ -275,7 +275,7 @@
 
             <!-- Panel de Cliente -->
             <div id="client-panel" class="role-panel" style="display: none; margin-top: 30px;">
-                <h3>Mis Citas Agendadas</h3>
+                <h3 data-i18n="dash.client.appts_title">Mis Citas Agendadas</h3>
                 <div id="client-appointments-list" class="about-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
                     <!-- Cargado por JS -->
                 </div>
@@ -287,24 +287,24 @@
             <main>
                 <!-- Panel de Cliente -->
                 <div id="client-panel" style="width: 100%; max-width: 900px; margin: 0 auto; padding: 20px 0; text-align: center;">
-                    <h2 style="color: var(--secondary-color); font-size: 3em; text-align: center; margin-bottom: 50px; text-shadow: 0 2px 10px rgba(255,255,255,0.8);">Nuestros Tratamientos</h2>
-                    
+                    <h2 data-i18n="book.title" style="color: var(--secondary-color); font-size: 3em; text-align: center; margin-bottom: 50px; text-shadow: 0 2px 10px rgba(255,255,255,0.8);">Nuestros Tratamientos</h2>
+
                     <div class="category-section" style="margin-bottom: 60px;">
-                        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Masajes Relajantes</h3>
+                        <h3 data-i18n="book.cat.masajes" style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Masajes Relajantes</h3>
                         <div class="services-grid" id="services-masajes-list" style="justify-content: center; justify-items: center; gap: 60px;">
                             <!-- Servicios se cargarán aquí -->
                         </div>
                     </div>
-                    
+
                     <div class="category-section" style="margin-bottom: 60px;">
-                        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Tratamientos Faciales</h3>
+                        <h3 data-i18n="book.cat.faciales" style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Tratamientos Faciales</h3>
                         <div class="services-grid" id="services-faciales-list" style="justify-content: center; justify-items: center; gap: 60px;">
                             <!-- Servicios se cargarán aquí -->
                         </div>
                     </div>
-                    
+
                     <div class="category-section" style="margin-bottom: 60px;">
-                        <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Terapias Corporales</h3>
+                        <h3 data-i18n="book.cat.corporales" style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px; display: inline-block; font-size: 1.8em;">Terapias Corporales</h3>
                         <div class="services-grid" id="services-corporales-list" style="justify-content: center; justify-items: center; gap: 60px;">
                             <!-- Servicios se cargarán aquí -->
                         </div>
@@ -370,13 +370,13 @@
                                 </div>
                             </div>
                             
-                            <h4 style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
+                            <h4 data-i18n="dash.admin.services_existing" style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
                             <div id="admin-services-list" class="services-grid" style="grid-template-columns: 1fr;"></div>
                         </div>
 
                         <!-- Columna Derecha: Citas Globales -->
                         <div style="flex: 1; min-width: 300px; border-left: 2px solid rgba(0,0,0,0.1); padding-left: 30px;">
-                            <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 25px; display: inline-block;">Todas las Citas</h3>
+                            <h3 data-i18n="dash.admin.all_appts_title" style="color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 25px; display: inline-block;">Todas las Citas</h3>
                             <div id="admin-appointments-list" class="services-grid" style="grid-template-columns: 1fr; gap: 15px;">
                                 <!-- Citas cargadas dinámicamente -->
                             </div>

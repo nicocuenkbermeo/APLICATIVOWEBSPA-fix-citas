@@ -78,8 +78,8 @@ async function loadAllAppointments() {
                 list.innerHTML += `
                     <div style="background: rgba(255,255,255,0.7); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
                         <p style="margin-bottom: 5px; font-weight: bold;">${a.serviceName}</p>
-                        <p style="font-size: 0.9em; margin-bottom: 3px;"><strong>Cliente:</strong> ${a.clientName}</p>
-                        <p style="font-size: 0.9em; margin-bottom: 3px;"><strong>Terapeuta:</strong> ${a.therapistName}</p>
+                        <p style="font-size: 0.9em; margin-bottom: 3px;"><strong>${t('dash.therapist.field.client')}</strong> ${a.clientName}</p>
+                        <p style="font-size: 0.9em; margin-bottom: 3px;"><strong>${t('dash.client.field.therapist')}</strong> ${a.therapistName}</p>
                         <p style="font-size: 0.85em; color: var(--text-light);">📅 ${date}</p>
                     </div>
                 `;
@@ -118,13 +118,13 @@ async function loadClientAppointments() {
                 const statusColor = isCancelled ? '#999' : 'var(--primary-color)';
                 const cancelBtn = isCancelled
                     ? ''
-                    : `<button class="btn primary" style="background:#e74c3c; padding:5px 12px; font-size:0.85em; margin-top:10px;" onclick="cancelMyAppointment(${a.id})">Cancelar</button>`;
+                    : `<button class="btn primary" style="background:#e74c3c; padding:5px 12px; font-size:0.85em; margin-top:10px;" onclick="cancelMyAppointment(${a.id})">${t('dash.client.btn.cancel')}</button>`;
                 list.innerHTML += `
                     <div class="service-card" style="padding: 15px; border-top: 3px solid var(--secondary-color); ${isCancelled ? 'opacity:0.6;' : ''}">
                         <h4 style="margin-bottom: 10px; color: var(--secondary-color);">${a.serviceName}</h4>
-                        <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Terapeuta:</strong> ${a.therapistName}</p>
+                        <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>${t('dash.client.field.therapist')}</strong> ${a.therapistName}</p>
                         <p style="font-size: 0.85em; color: var(--text-dark);">📅 ${date}</p>
-                        <p style="font-size: 0.8em; margin-top: 5px; color: ${statusColor};"><strong>Estado:</strong> ${a.status}</p>
+                        <p style="font-size: 0.8em; margin-top: 5px; color: ${statusColor};"><strong>${t('dash.client.field.status')}</strong> ${a.status}</p>
                         ${cancelBtn}
                     </div>
                 `;
@@ -328,9 +328,9 @@ async function loadTherapistAppointments() {
                 list.innerHTML += `
                     <div class="service-card">
                         <h4>${a.serviceName}</h4>
-                        <p><strong>Cliente:</strong> ${a.clientName}</p>
-                        <p><strong>Fecha y Hora:</strong> ${dateObj.toLocaleString()}</p>
-                        <p><strong>Estado:</strong> <span style="color: var(--primary-color)">${a.status}</span></p>
+                        <p><strong>${t('dash.therapist.field.client')}</strong> ${a.clientName}</p>
+                        <p><strong>${t('dash.therapist.field.datetime')}</strong> ${dateObj.toLocaleString()}</p>
+                        <p><strong>${t('dash.client.field.status')}</strong> <span style="color: var(--primary-color)">${a.status}</span></p>
                     </div>
                 `;
             });
@@ -368,7 +368,7 @@ async function loadServices() {
                     </div>
                     <div style="margin-top: auto;">
                         <p class="price" style="margin-bottom:15px; font-size: 1.2em;">$${s.price}</p>
-                        <button class="btn primary" style="width:100%;" onclick="openBookingModal(${s.id}, '${s.name.replace(/'/g, "\\'")}')">Agendar Cita</button>
+                        <button class="btn primary" style="width:100%;" onclick="openBookingModal(${s.id}, '${s.name.replace(/'/g, "\\'")}')">${t('book.btn.book')}</button>
                     </div>
                 </div>
             `;
@@ -408,8 +408,8 @@ async function loadAdminServices() {
                         <p style="font-size: 0.9em; margin-bottom: 5px;">Precio: $${s.price}</p>
                     </div>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn primary" style="padding: 5px 15px; font-size: 0.85em;" onclick="openEditModal(${s.id}, '${(s.category||'').replace(/'/g, "\\'")}', '${s.name.replace(/'/g, "\\'")}', '${(s.description||'').replace(/[\r\n]+/g, " ").replace(/'/g, "\\'")}', ${s.price}, '${(s.imageUrl||'').replace(/'/g, "\\'")}')">Editar</button>
-                        <button class="btn primary" style="background: #e74c3c; padding: 5px 15px; font-size: 0.85em;" onclick="deleteService(${s.id})">Borrar</button>
+                        <button class="btn primary" style="padding: 5px 15px; font-size: 0.85em;" onclick="openEditModal(${s.id}, '${(s.category||'').replace(/'/g, "\\'")}', '${s.name.replace(/'/g, "\\'")}', '${(s.description||'').replace(/[\r\n]+/g, " ").replace(/'/g, "\\'")}', ${s.price}, '${(s.imageUrl||'').replace(/'/g, "\\'")}')">${t('dash.admin.btn.edit')}</button>
+                        <button class="btn primary" style="background: #e74c3c; padding: 5px 15px; font-size: 0.85em;" onclick="deleteService(${s.id})">${t('dash.admin.btn.delete')}</button>
                     </div>
                 </div>
             `;
@@ -446,7 +446,7 @@ async function loadPublicServices() {
                     <div style="${borderStyle}">
                         <h4 style="color: var(--secondary-color); font-size: 1.2em; margin-bottom: 10px;">${s.name}</h4>
                         <p style="margin-bottom: 15px;">${s.description || ''}</p>
-                        <button class="btn primary" onclick="handleBookClick()">Agendar por $${s.price}</button>
+                        <button class="btn primary" onclick="handleBookClick()">${t('book.public.cta')} $${s.price}</button>
                     </div>
                 `;
             });
@@ -466,7 +466,7 @@ async function loadPublicServices() {
 
 // Delete Service Logic
 async function deleteService(id) {
-    if (!confirm("¿Estás seguro de que deseas eliminar este servicio?")) return;
+    if (!confirm(t('dash.admin.confirm_delete'))) return;
     try {
         const userData = JSON.parse(localStorage.getItem('user'));
         const res = await fetch(`${API_URL}/services/${id}`, {
@@ -591,21 +591,21 @@ async function openBookingModal(serviceId, serviceName) {
         if (res.ok) {
             const therapists = await res.json();
             const select = document.getElementById('booking-therapist');
-            select.innerHTML = '<option value="">Selecciona un terapeuta</option>';
+            select.innerHTML = `<option value="">${t('modal.select_therapist.placeholder')}</option>`;
             if (therapists.length === 0) {
-                select.innerHTML = '<option value="">No hay terapeutas disponibles</option>';
+                select.innerHTML = `<option value="">${t('modal.no_therapists')}</option>`;
             }
-            therapists.forEach(t => {
-                select.innerHTML += `<option value="${t.id}">${t.name} (@${t.username})</option>`;
+            therapists.forEach(th => {
+                select.innerHTML += `<option value="${th.id}">${th.name} (@${th.username})</option>`;
             });
         } else {
             const select = document.getElementById('booking-therapist');
-            select.innerHTML = '<option value="">Error cargando terapeutas</option>';
+            select.innerHTML = `<option value="">${t('modal.error_therapists')}</option>`;
             console.error('Error fetching therapists:', res.status);
         }
     } catch (err) {
         const select = document.getElementById('booking-therapist');
-        select.innerHTML = '<option value="">Error de conexión</option>';
+        select.innerHTML = `<option value="">${t('modal.connection_error')}</option>`;
         console.error("Error loading therapists", err);
     }
 }
@@ -784,7 +784,7 @@ function showUsersMgmtMessage(text, isError) {
 
 // Cancelar cita (cliente o admin) — llama PUT /api/appointments/{id}/cancel
 async function cancelMyAppointment(appointmentId) {
-    if (!confirm('¿Estás seguro de que querés cancelar esta cita?')) return;
+    if (!confirm(t('confirm.cancel_appt'))) return;
     const userData = JSON.parse(localStorage.getItem('user'));
     try {
         const res = await fetch(`${API_URL}/appointments/${appointmentId}/cancel`, {
