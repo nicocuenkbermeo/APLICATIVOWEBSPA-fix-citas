@@ -251,8 +251,20 @@
                 
                 <h4 style="color: var(--secondary-color); margin-bottom:15px; font-size: 1.5em;">Servicios Existentes</h4>
                 <div id="admin-services-list" class="services-grid"></div>
+
+                <!-- Gestion de Usuarios y Roles (admin only) -->
+                <div id="users-management" style="margin-top: 50px; padding-top: 30px; border-top: 2px solid var(--accent-color);">
+                    <h4 data-i18n="dash.admin.users_title" style="color: var(--secondary-color); margin-bottom: 15px; font-size: 1.5em;">Gestion de Usuarios</h4>
+                    <p data-i18n="dash.admin.users_desc" style="font-size: 0.9em; color: var(--text-light); margin-bottom: 20px;">
+                        Cambia el rol de cualquier usuario del sistema. Marca el / los roles deseados y guarda. Validacion: por seguridad no podes quitarte a vos mismo el rol ADMIN.
+                    </p>
+                    <div id="users-list" class="services-grid" style="grid-template-columns: 1fr; gap: 12px;">
+                        <!-- Cargado dinamicamente por loadUsersForRoleManagement() -->
+                    </div>
+                    <div id="users-management-message" class="message" style="margin-top: 15px;"></div>
+                </div>
             </div>
-            
+
             <!-- Panel de Terapeuta -->
             <div id="therapist-panel" class="role-panel" style="display: none; margin-top: 30px;">
                 <h3 data-i18n="dash.therapist.title">Mis Próximas Sesiones (Terapeuta)</h3>

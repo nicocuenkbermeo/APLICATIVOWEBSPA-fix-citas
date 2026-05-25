@@ -289,6 +289,7 @@ function checkAuth() {
             loadAdminServices();
             loadAllAppointments();
             loadClientAppointments();
+            loadUsersForRoleManagement();
         } else if (user.roles.includes('ROLE_THERAPIST')) {
             document.getElementById('therapist-panel').style.display = 'block';
             loadTherapistAppointments();
@@ -677,6 +678,109 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
         submitBtn.textContent = originalLabel;
     }
 });
+
+// ==========================================
+// Gestion de Usuarios y Roles (ADMIN)
+// ==========================================
+const AVAILABLE_ROLES = [
+    { key: 'ROLE_CLIENT',    label: 'Cliente' },
+    { key: 'ROLE_THERAPIST', label: 'Terapeuta' },
+    { key: 'ROLE_ADMIN',     label: 'Admin' }
+];
+
+async function loadUsersForRoleManagement() {
+    const list = document.getElementById('users-list');
+    if (!list) return;
+    list.innerHTML = '<p>Cargando usuarios...</p>';
+
+    const userData = JSON.parse(localStorage.getItem('user'));
+    try {
+        const res = await fetch(`${API_URL}/users`, {
+            headers: { 'Authorization': 'Bearer ' + userData.accessToken }
+        });
+        if (!res.ok) {
+            list.innerHTML = '<p style="color:#e74c3c;">Error cargando usuarios.</p>';
+            return;
+        }
+        const users = await res.json();
+        list.innerHTML = '';
+        users.forEach(u => {
+            const currentRoles = u.roles || [];
+            const checkboxes = AVAILABLE_ROLES.map(r => {
+                const checked = currentRoles.includes(r.key) ? 'checked' : '';
+                return `
+                    <label style="display:inline-flex; align-items:center; gap:6px; margin-right:15px; font-size:0.9em; cursor:pointer;">
+                        <input type="checkbox" value="${r.key}" ${checked}> ${r.label}
+                    </label>
+                `;
+            }).join('');
+
+            list.innerHTML += `
+                <div class="user-row" data-user-id="${u.id}" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:15px;">
+                    <div style="flex: 1; min-width:200px;">
+                        <h4 style="margin:0 0 4px 0; font-size:1em;">${u.name} <span style="font-size:0.85em; color: var(--text-light); font-weight:normal;">(@${u.username})</span></h4>
+                        <p style="margin:0; font-size:0.8em; color: var(--text-light);">${u.email}</p>
+                    </div>
+                    <div style="flex: 2; min-width:280px;">
+                        ${checkboxes}
+                    </div>
+                    <button class="btn primary" style="padding: 6px 14px; font-size:0.85em;"
+                            onclick="saveUserRoles(${u.id}, this)">Guardar</button>
+                </div>
+            `;
+        });
+    } catch (err) {
+        list.innerHTML = '<p style="color:#e74c3c;">Error de conexion al cargar usuarios.</p>';
+    }
+}
+
+async function saveUserRoles(userId, buttonEl) {
+    const row = buttonEl.closest('.user-row');
+    const checkedRoles = Array.from(row.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+    if (checkedRoles.length === 0) {
+        showUsersMgmtMessage('Debes seleccionar al menos un rol.', true);
+        return;
+    }
+
+    const userData = JSON.parse(localStorage.getItem('user'));
+    buttonEl.disabled = true;
+    const original = buttonEl.textContent;
+    buttonEl.textContent = '...';
+
+    try {
+        const res = await fetch(`${API_URL}/users/${userId}/roles`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + userData.accessToken
+            },
+            body: JSON.stringify({ roles: checkedRoles })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok) {
+            showUsersMgmtMessage(data.message || 'Roles actualizados.', false);
+            // refrescar para mostrar el estado final desde BD (idempotente)
+            loadUsersForRoleManagement();
+        } else {
+            showUsersMgmtMessage(data.message || 'Error al actualizar roles.', true);
+        }
+    } catch (err) {
+        showUsersMgmtMessage('Error de conexion.', true);
+    } finally {
+        buttonEl.disabled = false;
+        buttonEl.textContent = original;
+    }
+}
+
+function showUsersMgmtMessage(text, isError) {
+    const el = document.getElementById('users-management-message');
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'message ' + (isError ? 'error' : 'success');
+    setTimeout(() => { el.textContent = ''; el.className = 'message'; }, 4000);
+}
 
 // Cancelar cita (cliente o admin) — llama PUT /api/appointments/{id}/cancel
 async function cancelMyAppointment(appointmentId) {
