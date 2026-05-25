@@ -178,6 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Routing & SPA Logic
 function showSection(sectionId) {
+    // Auth guard: si la seccion es protegida y no hay sesion, redirigir a login.
+    // Esto cubre intentos via consola, links directos, o navegacion accidental.
+    const PROTECTED = ['profile-container', 'dashboard-container'];
+    if (PROTECTED.includes(sectionId) && !localStorage.getItem('user')) {
+        sectionId = 'auth-container';
+    }
     document.querySelectorAll('.content-section').forEach(sec => {
         sec.style.display = 'none';
         sec.classList.remove('active');
@@ -217,8 +223,41 @@ function showProfile() {
 function logout() {
     localStorage.removeItem('user');
     checkAuth();
+    // Limpiar el back-history para que el boton "atras" del navegador
+    // no devuelva al usuario a una pantalla autenticada cacheada.
+    // Aplicamos pushState para insertar una entrada nueva y luego
+    // replaceState para evitar acumular history al hacer logout repetido.
+    try {
+        history.replaceState(null, '', window.location.pathname);
+    } catch (_) { /* en algunos browsers history.replaceState puede fallar en file:// */ }
     showSection('home-section');
 }
+
+// Secciones que requieren sesion activa. Si el usuario llega a ellas sin token
+// (por back-button, link directo, o bfcache restore), se redirige a login.
+const PROTECTED_SECTIONS = ['profile-container', 'dashboard-container'];
+
+// Guard ante back/forward del navegador: revalidar auth en cada cambio de history.
+window.addEventListener('popstate', () => {
+    const visibleSection = document.querySelector('.content-section.active');
+    if (visibleSection && PROTECTED_SECTIONS.includes(visibleSection.id) && !localStorage.getItem('user')) {
+        showSection('auth-container');
+        switchTab('login');
+    }
+});
+
+// Guard ante back-forward cache (bfcache): cuando el navegador restaura una pagina
+// desde su cache de paginas previas (event.persisted=true), volvemos a validar el
+// estado de auth para que el DOM cacheado no quede mostrando datos sensibles.
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        checkAuth();
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            showSection('home-section');
+        }
+    }
+});
 
 function checkAuth() {
     const userData = localStorage.getItem('user');
