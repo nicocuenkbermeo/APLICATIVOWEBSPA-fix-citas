@@ -241,9 +241,15 @@ function checkAuth() {
         document.getElementById('client-panel').style.display = 'none';
         
         if (user.roles.includes('ROLE_ADMIN')) {
+            // Admin ve TODOS sus paneles. Como ADMIN tambien puede agendar citas
+            // como cliente para si mismo, mostramos client-panel ademas del admin-panel
+            // y disparamos loadClientAppointments para que sus propias citas aparezcan
+            // en "Mis Citas Agendadas".
             document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('client-panel').style.display = 'block';
             loadAdminServices();
             loadAllAppointments();
+            loadClientAppointments();
         } else if (user.roles.includes('ROLE_THERAPIST')) {
             document.getElementById('therapist-panel').style.display = 'block';
             loadTherapistAppointments();
